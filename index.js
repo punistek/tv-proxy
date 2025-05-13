@@ -4,9 +4,17 @@ const app = express();
 
 app.get("/proxy", (req, res) => {
   const url = req.query.url;
+  const referer = "https://grtv27.live/";  // Yayının referer adresi
   if (!url) return res.status(400).send("URL gerekli");
 
-  req.pipe(request(url)).pipe(res);
+  const options = {
+    url: url,
+    headers: {
+      'Referer': referer,
+    },
+  };
+
+  req.pipe(request(options)).pipe(res);
 });
 
 app.listen(process.env.PORT || 3000, () => {
